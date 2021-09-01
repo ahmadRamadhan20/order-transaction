@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose')
 
 const coupunSchema = new Schema({
     code: {
-        type: string,
+        type: String,
         required: true,
         uppercase: true
     },
