@@ -2,7 +2,7 @@
 process.env.NODE_ENV = 'test';
 
 let mongoose = require("mongoose");
-let Order = require('../api/models/order.js');
+let User = require('../api/models/user.js');
 
 //Require the dev-dependencies
 let chai = require('chai');
@@ -15,7 +15,7 @@ let request = require('supertest');
 chai.use(chaiHttp);
 
 //Our parent block
-describe('Order', () => {
+describe('ShoppingCart', () => {
 
   let token = null;
   before(function (done) {
@@ -23,60 +23,55 @@ describe('Order', () => {
            .post('/login')
            .set('Accept', 'application/json')
            .set('Content-Type', 'application/json')
-           .send({ username: 'wedew3', password: 'asdbc' })
+           .send({ username: 'admin', password: 'asdbc' })
            .expect(200)
            .expect('Content-Type', /json/)
            .expect(function(response) {
               token = response.body.message;
-              console.log(token);
            })
            .end(done);
   });
 
-  describe('/GET Order', () => {
-      it('it should GET all order of the user', (done) => {
+  describe('/GET ShoppingCart', () => {
+      it('it should GET all the products in cart', (done) => {
         request(server)
-        		.get('/order')
+        		.get('/shoppingcart')
         		.set('Content-Type', 'application/json')
       			.set('Authorization', 'Bearer ' + token)
             .end((err, res) => {
                 res.should.have.status(200);
+                res.body.message.items.should.be.a('array');
+              done();
+            });
+      });
+  });
+
+  describe('/POST ShoppingCart', () => {
+
+      it('it should give valid request for adding an item to cart', (done) => {
+      	let item = {
+      		prod_id: 'MS2M9D',
+      		quantity: 10
+      	}
+        request(server)
+        		.post('/shoppingcart')
+        		.set('Content-Type', 'application/json')
+      			.set('Authorization', 'Bearer ' + token)
+      			.send(item)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
                 res.body.should.have.property('status').eql('success');
               done();
             });
       });
-  });
 
-  describe('/POST Order', () => {
-      it('it should give invalid request because no item in shoppingcart', (done) => {
-      	let item = {
-            name: "sugih",
-            phonenumber: "0823288",
-            email: "mwkdwm@gmail.com",
-            address: "melawar"
-      	}
+      it('it should give invalid request for uncomplete field (theres no quantity field)', (done) => {
         request(server)
-        		.post('/order')
+        		.post('/shoppingcart')
         		.set('Content-Type', 'application/json')
       			.set('Authorization', 'Bearer ' + token)
-      			.send(item)
-            .end((err, res) => {
-                res.should.have.status(400);
-              done();
-            });
-      });
-
-      it('it should give invalid request for uncomplete field (theres no address field)', (done) => {
-        let item = {
-            name: "sugih",
-            phonenumber: "0823288",
-            email: "mwkdwm@gmail.com"
-        }
-        request(server)
-        		.post('/order')
-        		.set('Content-Type', 'application/json')
-      			.set('Authorization', 'Bearer ' + token)
-      			.send(item)
+      			.send({ prod_id: 'MK2M2' })
             .end((err, res) => {
                 res.should.have.status(400);
               done();
@@ -85,18 +80,12 @@ describe('Order', () => {
 
   });
 
-  describe('/POST Order/:order_id', () => {
-      it('it should give invalid request for invalid order id', (done) => {
-        let item = {
-          bank : "BCA",
-          account_number : "1231231",
-          name : "sugih"
-        }
+  describe('/DELETE ShoppingCart', () => {
+      it('it should give invalid request for deleting an item thats not found', (done) => {
         request(server)
-            .post('/order/salahorderid')
-            .set('Content-Type', 'application/json')
-            .set('Authorization', 'Bearer ' + token)
-            .send(item)
+        		.delete('/shoppingcart/MK2dM2')
+        		.set('Content-Type', 'application/json')
+      			.set('Authorization', 'Bearer ' + token)
             .end((err, res) => {
                 res.should.have.status(400);
               done();
