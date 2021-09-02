@@ -1,1 +1,3 @@
-export const JWT_SECRET = 'apiauth'
+module.exports = {
+	JWT_SECRET: 'apiauth'
+}

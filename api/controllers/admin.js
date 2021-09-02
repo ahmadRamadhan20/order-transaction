@@ -14,9 +14,9 @@ module.exports = {
         } else {
             // find related user and populate it's data
             Order.find({}).populate({ path: 'items.products'})
-            .populate('coupon')
-            .populate('payment')
-            .exec(function(err, foundOrder) {
+                 .populate('coupon')
+                 .populate('payment')
+                 .exec(function(err, foundOrder) {
                 if (err) {
                     res.status(500).json({ status: 'error', message: err});
                 } else {
@@ -33,7 +33,7 @@ module.exports = {
             res.status(401).json({ status: 'error', message: 'Unauthorized access, admin only!'});
         } else {
             // find related order and populate it's data
-            Order.findById(orderid).populate({ path: 'items.product'})
+            Order.findById(orderid).populate({ path: 'items.products'})
             .populate('coupon')
             .populate('payment')
             .exec(function(err, foundOrder) {
@@ -98,7 +98,7 @@ module.exports = {
                         order: orderid,
                         name: foundOrder.name,
                         address: foundOrder.address,
-                        shipment_status: 'In Jakarta'
+                        shipment_status: 'In Bandung'
                     };
                     Shipment.create(newShip, function(err2, createdShipment ){
                         if (err2) {

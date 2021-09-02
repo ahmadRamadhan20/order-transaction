@@ -17,7 +17,7 @@ chai.use(chaiHttp);
 //Our parent block
 describe('Order', () => {
 
-  let token = null;
+  var token = null;
   before(function (done) {
     request(server)
            .post('/login')

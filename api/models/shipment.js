@@ -1,30 +1,31 @@
-const { Schema, model } = require('mongoose')
+const mongoose 	= require('mongoose');
 
-const shipmentSchema = new Schema({
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    },
+const shipmentSchema = new mongoose.Schema({
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User'
+	},
 
-    order: {
-        type: Schema.Types.ObjectId,
-        ref: 'Order'
-    },
+	order: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Order'
+	},
 
-    name: {
-        type: String,
-        required: true
-    },
+	name: {
+		type: String, 
+		required: true
+	},
 
-    address: {
-        type: String,
-        required: true
-    },
+	address: {
+		type: String, 
+		required: true
+	},
 
-    shipment_status: {
-        type: String,
-        default: 'In Tangerang Selatan'
-    }
+	shipment_status: {
+		type: String,
+		default: 'In Warehouse'
+	}
+
 });
 
-module.exports = model('Shipment', shipmentSchema);
+module.exports = mongoose.model('Shipment', shipmentSchema);

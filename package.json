@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch": "nodemon server.js",
-    "lint": "eslint ./"
+    "start": "SET NODE_ENV=dev && nodemon server.js",
+    "lint": "eslint ./",
+    "test": "mocha --timeout 10000"
   },
   "keywords": [],
   "author": "",

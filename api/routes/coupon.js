@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const passport = require('passport')
 const passportConf = require('../passport')
-const UserController = require('../controllers/user')
+const UserController = require('../controllers/users')
 const ShoppingCartController = require('../controllers/shoppingcart')
 const CouponController = require('../controllers/coupon')
 
